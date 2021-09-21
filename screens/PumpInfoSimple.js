@@ -126,7 +126,7 @@ export default function PumpInfoSimple({ navigation, route }) {
                         }}
                     />
 
-                    <View style={styles.id}><Text style={{ fontSize: 20, textAlign:'center', fontWeight: 'bold', color: '#FFFFFF', margin: 10 }}>Find The Pump ID Your Closest Station</Text></View>
+                    <View style={styles.id}><Text style={{ fontSize: 18, textAlign:'center', fontWeight: 'bold', color: '#FFFFFF', margin: 10 }}>Find The Pump ID Of Your Closest Station</Text></View>
                     <MapView
                         style={{ width: window.width/1.1, height: window.height / 3 }}
                         showsCompass={true}

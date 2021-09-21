@@ -191,9 +191,9 @@ export default function NewComp({ navigation }) {
     fData.append('compaint_description', description)
     fData.append('compaint_location', address)
     fData.append('compaint_priority', selectedCompPriority)
-    fData.append('compaint_status', '0')
+    fData.append('compaint_status', '2')
     fData.append('image', {
-      name: Date.now() + "_" + user.id.toString() + '.jpg',
+      name: Date.now() + "_" + user.id.toString() +"_" + userLevel + '.jpg',
       uri: picDetail.uri,
       type: 'image/jpg'
     })

@@ -22,28 +22,34 @@ export default function PumpInfo({ navigation, route }) {
 
   const window = useWindowDimensions()
   const user = useSelector(state => state.userReducer)
+  const { id } = route.params
 
-  const [pumpDetail, setPumpDetail] = useState()
+  const [pumpDetail, setPumpDetail] = useState([{pump_id:0}])
+  const [sensorDetail, setSensorDetail] = useState([])
   const [delagted, setDelegated] = useState()
 
   const [isWorking, setisWorking] = useState()
-    ;
   const [hasLoaded, setHasLoaded] = useState(false)
+  const [hasLoadedSensor, setHasLoadedSensor] = useState(false)
   const [worker, setWorker] = useState()
 
   useEffect(() => {
     fetchComplaintInfo();
+    console.log(id)
+    
 
   }, [])
 
   const fetchComplaintInfo = async () => {
-    const data = await fetch(`http://${ip}:5000/station-info/${user.id}`)
+    const data = await fetch(`http://${ip}:5000/station-info/${user.id}&${id}`)
     const res = await data.json();
     if (res.length == 0) {
       Alert.alert('Error!', 'Failed to retrieve Station Info. Check your internet connectiom')
     } else {
-      setPumpDetail(res[0])
       console.log(res)
+      setPumpDetail(res[0])
+      // getSensorInfo(res[0].pump_id)
+
 
       if (res[0].status == '0')
         setisWorking(false);
@@ -57,10 +63,24 @@ export default function PumpInfo({ navigation, route }) {
     setisWorking(!isWorking)
   }
 
+  const getSensorInfo = async (pumpID) => {
+    const data = await fetch(`http://${ip}:5000/station-info/pump/${pumpID}`)
+    console.log('here')
+    const res = await data.json();
+    if (res.length == 0) {
+      Alert.alert('Error!', 'Failed to retrieve Sensor Info. Check your internet connection')
+    } else {
+      console.log(res)
+      setSensorDetail(res)
+      setHasLoadedSensor(true)
+    }
+
+  }
+
 
   if (!hasLoaded) {
     return (
-      <Text>Loading...</Text>
+      <Text>Loading..</Text>
     )
   }
   return (
@@ -93,17 +113,17 @@ export default function PumpInfo({ navigation, route }) {
                   latitude: pumpDetail.latitude, longitude: pumpDetail.longitude, latitudeDelta: 0.005,
                   longitudeDelta: 0.005,
                 }} >
-                  <Marker
-                      coordinate={{ latitude: pumpDetail.latitude, longitude: pumpDetail.longitude, }}
-                      
-                    />
-                </MapView>
+                <Marker
+                  coordinate={{ latitude: pumpDetail.latitude, longitude: pumpDetail.longitude, }}
+
+                />
+              </MapView>
             </View>
           </TouchableNativeFeedback>
 
           {user.userType == 'worker' || user.userType == 'technician' ? <TouchableNativeFeedback style={styles.loginBtn} onPress={pumpSwitch}>
             <View style={styles.btn2}>
-              <Text style={styles.btnText2} onPress={pumpSwitch}>{!isWorking ? 'Turn Pump On' : 'Turn Pump Off'}</Text>
+              <Text style={styles.btnText2} onPress={pumpSwitch}>{isWorking ? 'Turn Pump On' : 'Turn Pump Off'}</Text>
             </View>
           </TouchableNativeFeedback> : <View style={{ marginVertical: 20 }}></View>}
 
@@ -126,7 +146,7 @@ export default function PumpInfo({ navigation, route }) {
           <View style={styles.textField}>
             <Text style={{ fontSize: 10, position: 'absolute', top: -10, left: 15, backgroundColor: '#FFFFFF' }}>
               Assigned Worker Name</Text>
-            <Text>{pumpDetail.worker_name }</Text>
+            <Text>{pumpDetail.worker_name}</Text>
           </View>
 
           <View style={styles.textField}>
@@ -157,6 +177,27 @@ export default function PumpInfo({ navigation, route }) {
             <Text style={{ fontSize: 10, position: 'absolute', top: -10, left: 15, backgroundColor: '#FFFFFF' }}>
               Address </Text>
             <Text>{pumpDetail.location}</Text>
+          </View>
+
+          <View style={styles.textField}>
+            <Text style={{ fontSize: 10, position: 'absolute', top: -10, left: 15, backgroundColor: '#FFFFFF' }}>
+              Sensors </Text>
+
+            {hasLoadedSensor ? <View>
+              {sensorDetail.map((sensor) => {
+
+                return (
+                  <View style={{ flexDirection: 'row', flex: 'space-around' }}>
+                    <Text>{sensor.sensor_id}</Text>
+                    <Text>{sensor.sensor_name}</Text>
+                  </View>
+                )
+              })
+              }
+
+            </View> : null}
+
+
           </View>
         </View>
 

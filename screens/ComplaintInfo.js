@@ -36,12 +36,13 @@ export default function ComplaintInfo({ navigation, route }) {
     const [worker, setWorker] = useState()
 
     useEffect(() => {
-        fetchComplaintInfo();
+        console.log(user.id)
+        fetchComplaintInfo(user.userType);
         console.log(id)
     }, [])
 
-    const fetchComplaintInfo = async () => {
-        const data = await fetch(`http://${ip}:5000/complaint-fetch-details/${id}`)
+    const fetchComplaintInfo = async (userType) => {
+        const data = await fetch(`http://${ip}:5000/complaint-fetch-details/${userType}/${id}`)
         const res = await data.json();
         if (res.length == 0) {
             Alert.alert('Error!', 'Failed to retrieve complaints. Check your internet connection')
@@ -93,13 +94,13 @@ export default function ComplaintInfo({ navigation, route }) {
 
                     <View style={styles.id}><Text style={{ fontSize: 25, fontWeight: 'bold', color: '#FFFFFF' }}>Complaint ID: {id}</Text></View>
 
-                    <TouchableNativeFeedback onLongPress={() => Linking.openURL('geo:0,0?q=33.70828258136273,73.05061721351053(Yeet)')}>
+                    {/* <TouchableNativeFeedback onLongPress={() => Linking.openURL('geo:0,0?q=33.70828258136273,73.05061721351053(Yeet)')}>
                         <View style={{ borderRadius: 20, overflow: 'hidden' }}>
                             <MapView style={{ width: window.width / 1.5, height: window.height / 4, }} />
                         </View>
-                    </TouchableNativeFeedback>
+                    </TouchableNativeFeedback> */}
 
-                    {user.userType == 'worker' || user.userType == 'technician' ? <TouchableNativeFeedback style={styles.loginBtn}  onPress={() => navigation.push('Report', { id: compDetail.compaint_id })}>
+                    { user.id != compDetail.citizen_id && (user.userType == 'worker' || user.userType == 'technician'  ) ? <TouchableNativeFeedback style={styles.loginBtn}  onPress={() => navigation.push('Report', { id: compDetail.compaint_id })}>
                         <View style={styles.btn2}>
                             <Text style={styles.btnText2}>Submit Report</Text>
                         </View>
@@ -123,7 +124,7 @@ export default function ComplaintInfo({ navigation, route }) {
                     <View style={styles.textField}>
                         <Text style={{ fontSize: 10, position: 'absolute', top: -10, left: 15, backgroundColor: '#FFFFFF' }}>
                             Name</Text>
-                        <Text>{compDetail.citizen_name}</Text>
+                        <Text>{compDetail.name}</Text>
                     </View>
                     <View style={styles.textField}>
                         <Text style={{ fontSize: 10, position: 'absolute', top: -10, left: 15, backgroundColor: '#FFFFFF' }}>

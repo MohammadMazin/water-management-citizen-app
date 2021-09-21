@@ -3,6 +3,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableNativeFeedback, Linking } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
@@ -13,9 +14,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 
-export default function PumpInfoBox({ long, lat, start, stop, address, status, id }) {
+export default function PumpInfoBox({ long, lat, start, stop, address, status, id, workerId }) {
 
     const user = useSelector(state => state.userReducer)
+
+    const navigation = useNavigation();
 
     const [resComp, setResComp] = useState(0);
     const [unResComp, setUnResComp] = useState(0);
@@ -36,15 +39,15 @@ export default function PumpInfoBox({ long, lat, start, stop, address, status, i
     }
 
     const setStatus = () => {
-        if(status == '0')
+        if (status == '0')
             setPumpStatus('Off')
-        else if(status == '1')
+        else if (status == '1')
             setPumpStatus('On')
-        else if(status == '2')
+        else if (status == '2')
             setPumpStatus('Under Maintainance')
 
     }
-    
+
 
     return (
         <View style={styles.container}>
@@ -57,7 +60,7 @@ export default function PumpInfoBox({ long, lat, start, stop, address, status, i
                 </View>
 
 
-                {user.userType != 'guest'?
+                {user.userType != 'guest' ?
                     <View style={{ width: '100%' }}>
                         <Text style={styles.subtitle} >{langIsEnglish ? 'Start Time' : 'شروع وقت'}</Text>
                         <Text style={styles.subtitleText}>{start}</Text>
@@ -71,11 +74,16 @@ export default function PumpInfoBox({ long, lat, start, stop, address, status, i
                         <Text style={styles.subtitle} >{langIsEnglish ? 'Pump Status' : 'پمپ کی حالت'}</Text>
                         <Text style={styles.subtitleText}>{pumpStatus}</Text>
 
-                        <Button title="View Location On Map" onPress={() => Linking.openURL(`geo:0,0?q=${lat},${long}(Yeet)`)} />
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                            {user.id == workerId && user.userType == 'worker' ? <Button title="View More Info" onPress={() => navigation.push('PumpInfo', { id: id })}/> : null}
+                            {/* {user.id == workerId && user.userType == 'worker' ? <Button title="View More Info" onPress={() => console.log(id)}/> : null} */}
+                            <Button title="View Location On Map" onPress={() => Linking.openURL(`geo:0,0?q=${lat},${long}(Yeet)`)} />
+                        </View>
+
                     </View> :
                     <Text style={styles.subtitleText}>{langIsEnglish ? 'Sign Up / Login to use this feature' : 'اس فیچر کو استعمال کرنے کے لیے سائن اپ / لاگ ان کریں'}</Text>
 
-               }
+                }
 
 
 

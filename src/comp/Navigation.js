@@ -18,7 +18,9 @@ import ComplaintQuickView from '../../screens/ComplaintQuickView';
 import ScheduledJobs from '../../screens/ScheduledJobs';
 import Report from '../../screens/Report';
 import AllBills from '../../screens/AllBills';
+import PumpQuickView from '../../screens/PumpQuickView';
 import PumpInfo from '../../screens/PumpInfo';
+import PumpInfoBox from './PumpInfoBox';
 import PumpInfoSimple from '../../screens/PumpInfoSimple';
 import Attendance from '../../screens/Attendance';
 
@@ -172,6 +174,38 @@ const HomeStackScreen = ({ navigation }) => {
         headerTintColor: '#fff',
 
       }} />
+
+      {/* ------------------------------------- */}
+
+      <Stack.Screen name="PumpInfoBox" component={PumpInfoBox} options={{
+        title: 'Pump Access',
+
+        headerStyle: {
+          backgroundColor: colorSet.primary,
+        },
+        headerLeft: () => {
+          return <Icon.Button name="arrow-back" size={25} backgroundColor='#0099387' onPress={() => navigation.goBack()}></Icon.Button>
+        },
+        headerTintColor: '#fff',
+
+      }} />
+
+      {/* ------------------------------------- */}
+
+      <Stack.Screen name="PumpQuickView" component={PumpQuickView} options={{
+        title: 'List Of Pumps',
+
+        headerStyle: {
+          backgroundColor: colorSet.primary,
+        },
+        headerLeft: () => {
+          return <Icon.Button name="arrow-back" size={25} backgroundColor='#0099387' onPress={() => navigation.goBack()}></Icon.Button>
+        },
+        headerTintColor: '#fff',
+
+      }} />
+
+      {/* ------------------------------------- */}
 
       <Stack.Screen name="PumpInfoSimple" component={PumpInfoSimple} options={{
         title: 'Pump Info',

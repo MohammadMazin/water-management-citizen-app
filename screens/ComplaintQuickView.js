@@ -32,11 +32,11 @@ export default function ComplaintQuickView({ navigation }) {
 
   const [compList, setCompList] = useState();
 
-  const [segmentIndex, setSegmentIndex] = useState(0)
+  const [segmentIndex, setSegmentIndex] = useState(2)
 
   useEffect(() => {
     changeLanguage();
-    console.log(user.userType)
+    
     getComplaints(user.userType);
 
   }, [langState.isEnglish, segmentIndex]);
@@ -79,7 +79,7 @@ export default function ComplaintQuickView({ navigation }) {
         <View style={styles.container}>
 
           <SegmentedControl
-            values={['In Progress', 'Resolved']}
+            values={['Resolved', 'In Progress','Under Review']}
             selectedIndex={segmentIndex}
             onChange={setComplaintStatus}
             tintColor={colorSet.primary}

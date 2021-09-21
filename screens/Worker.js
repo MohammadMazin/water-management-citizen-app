@@ -118,7 +118,7 @@ export default function Worker({ navigation }) {
           </View>
 
           <View style={styles.userOptions}>
-            <TouchableNativeFeedback onPress={() => navigation.push('PumpInfo')}>
+            <TouchableNativeFeedback onPress={() => navigation.push('PumpQuickView')}>
               <View style={styles.option}>
                 <LinearGradient colors={[colorSet.secondaryGrad, colorSet.primary]} style={{ width: '100%' }}>
                   <Icon.Button style={styles.sign} name="water" size={50} color='#FFFFFF' backgroundColor='transparent' width={100} ></Icon.Button>
