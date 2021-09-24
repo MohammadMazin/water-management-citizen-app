@@ -7,3 +7,9 @@ A mobile application for citizens and staff. It accomodates four types of users:
 * Technicians - staff members who can view their jobs and the location where they need to be
 * Workers - staff members who manage stations and pumps 
 
+Tools Used
+
+* React Native
+* NodeJS
+* Expo
+* MySQL
